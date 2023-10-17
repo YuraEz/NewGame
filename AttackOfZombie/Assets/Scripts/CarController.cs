@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-
     public Transform[] waypoints; // Массив для хранения всех точек, которые куб должен посетить
-    
     private int currentWaypointIndex = 0; // Индекс текущей точки
     public float moveSpeed = 5f; // Скорость движения куба
-    //public float rotationSpeedFactor = 2.0f; // Фактор скорости вращения
     private ZombieController Zombies;
+    public static CarController Instance;
+
+    public float Healths;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -28,7 +33,6 @@ public class CarController : MonoBehaviour
         // Проверяем, достиг ли куб текущей точки
         if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.1f)
         {
-            //waypoints[currentWaypointIndex].gameObject.SetActive(false);
             Zombies.SpawnRandomZombies(3);
 
             // Если достиг, переходим к следующей точке
@@ -58,5 +62,14 @@ public class CarController : MonoBehaviour
 
         // Плавно вращаем куб к следующей точке
         //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
+    }
+
+    public void TakeDamage(float damageAmount)
+    {
+        Healths -= damageAmount;
+        if (Healths < 0)
+        {
+            transform.gameObject.SetActive(false);
+        }
     }
 }

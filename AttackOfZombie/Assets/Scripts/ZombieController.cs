@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
+    public Transform CarTransform;
+    public float moveSpeed;
+    public float attackPerSecond;
+    public float attackPower;
+
     public static ZombieController Instance;
     public Transform[] spawnPoints;
     public GameObject zombiePrefab; // Префаб зомби
+    private CarController Car;
 
     private void Awake()
     {
@@ -15,12 +21,19 @@ public class ZombieController : MonoBehaviour
 
     void Start()
     {
+        Car = CarController.Instance;
+        StartCoroutine(Attack());
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        transform.position = Vector3.MoveTowards(transform.position, CarTransform.position, moveSpeed * Time.deltaTime);
+        // Проверяем, достиг ли куб текущей точки
+        //if (Vector3.Distance(transform.position, CarTransform.position) < 3f)
+        //{
+        //    print("Тебя Бьют зомби");
+        //    Car.TakeDamage(5);
+        //}
     }
 
 
@@ -40,4 +53,18 @@ public class ZombieController : MonoBehaviour
             Instantiate(zombiePrefab, spawnPosition, Quaternion.identity); // Создаем зомби в заданной позиции
         }
     }
+
+    IEnumerator Attack()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(attackPerSecond);
+            if (Vector3.Distance(transform.position, CarTransform.position) < 5f)
+            {
+                print("Тебя Бьют зомби");
+                Car.TakeDamage(attackPower);
+            }
+        }
+    }
+
 }
