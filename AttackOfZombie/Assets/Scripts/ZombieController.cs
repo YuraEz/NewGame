@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
-    public GameObject zombiePrefab; // Префаб зомби
     public static ZombieController Instance;
+    public Transform[] spawnPoints;
+    public GameObject zombiePrefab; // Префаб зомби
 
     private void Awake()
     {
@@ -14,7 +15,6 @@ public class ZombieController : MonoBehaviour
 
     void Start()
     {
-        //SpawnRandomZombies(4);
     }
 
     // Update is called once per frame
@@ -24,8 +24,14 @@ public class ZombieController : MonoBehaviour
     }
 
 
-    public void SpawnRandomZombies(int count, Transform[] spawnPoints)
+    public void SpawnRandomZombies(int count)
     {
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogError("Spawn points are not initialized or empty.");
+            return;
+        }
+
         for (int i = 0; i < count; i++)
         {
             int randomIndex = Random.Range(0, spawnPoints.Length); // Генерируем случайный индекс точки спавна

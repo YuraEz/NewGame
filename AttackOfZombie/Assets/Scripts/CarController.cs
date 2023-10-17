@@ -6,7 +6,7 @@ public class CarController : MonoBehaviour
 {
 
     public Transform[] waypoints; // Массив для хранения всех точек, которые куб должен посетить
-    public Transform[] spawnPoints; 
+    
     private int currentWaypointIndex = 0; // Индекс текущей точки
     public float moveSpeed = 5f; // Скорость движения куба
     //public float rotationSpeedFactor = 2.0f; // Фактор скорости вращения
@@ -29,7 +29,7 @@ public class CarController : MonoBehaviour
         if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.1f)
         {
             //waypoints[currentWaypointIndex].gameObject.SetActive(false);
-            Zombies.SpawnRandomZombies(3, spawnPoints);
+            Zombies.SpawnRandomZombies(3);
 
             // Если достиг, переходим к следующей точке
             currentWaypointIndex++;
