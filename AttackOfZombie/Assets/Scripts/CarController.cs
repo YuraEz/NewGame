@@ -7,9 +7,8 @@ public class CarController : MonoBehaviour
     public Transform[] waypoints; // Массив для хранения всех точек, которые куб должен посетить
     private int currentWaypointIndex = 0; // Индекс текущей точки
     public float moveSpeed = 5f; // Скорость движения куба
-    private ZombieController Zombies;
+    private ZombieSpawner Zombies;
     public static CarController Instance;
-
     public float Healths;
 
     private void Awake()
@@ -21,7 +20,7 @@ public class CarController : MonoBehaviour
     {
         // Начинаем движение к первой точке (стартовой точке)
         MoveToWaypoint(waypoints[currentWaypointIndex]);
-        Zombies = ZombieController.Instance;
+        Zombies = ZombieSpawner.Instance;
     }
 
 
@@ -30,8 +29,15 @@ public class CarController : MonoBehaviour
         // Перемещаем куб к текущей точке
         transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypointIndex].position, moveSpeed * Time.deltaTime);
 
+        // Плавный поворот к следующей точке
+        Vector3 targetDirection = waypoints[currentWaypointIndex].position - transform.position;
+
+        //transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+        //Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 1.0f * Time.deltaTime);
+
         // Проверяем, достиг ли куб текущей точки
-        if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 0.1f)
+        if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 1f)
         {
             Zombies.SpawnRandomZombies(3);
 
@@ -56,12 +62,6 @@ public class CarController : MonoBehaviour
         // Направляем куб к следующей точке
         Vector3 direction = (waypoint.position - transform.position).normalized;
         transform.forward = direction;
-
-        // Вычисляем кватернион для плавного вращения
-        //Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        // Плавно вращаем куб к следующей точке
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
     }
 
     public void TakeDamage(float damageAmount)
@@ -69,7 +69,7 @@ public class CarController : MonoBehaviour
         Healths -= damageAmount;
         if (Healths < 0)
         {
-            transform.gameObject.SetActive(false);
+            Debug.Log("Ты проиграл!");
         }
     }
 }
