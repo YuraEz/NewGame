@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MachineGunController : MonoBehaviour
@@ -10,6 +11,7 @@ public class MachineGunController : MonoBehaviour
     [SerializeField] private BulletController PrefabBullet;
     [SerializeField] private float ShotForce;
     private bool CanAttack = true;
+    [SerializeField] private float TimeBetweenAttack;
     public float AttackForce;
     public float AttackRange;
     public float attackPower;
@@ -55,7 +57,7 @@ public class MachineGunController : MonoBehaviour
 
     private void Attack()
     {
-        if (!CanAttack) { return; }
+        if (!CanAttack) return; 
         BulletController bullet = Instantiate(PrefabBullet, Canon.position, Quaternion.identity);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.AddForce(ShotForce * Canon.forward);
@@ -72,7 +74,7 @@ public class MachineGunController : MonoBehaviour
             hit.rigidbody.AddForce(-hit.normal * AttackForce);
         }
         CanAttack = false;
-        Invoke("AttackTimer", 0.1f);
+        Invoke("AttackTimer", TimeBetweenAttack);
     }
 
     private void OnDrawGizmos()

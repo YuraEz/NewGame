@@ -7,10 +7,14 @@ public class CarController : MonoBehaviour
     public Transform[] waypoints; // Массив для хранения всех точек, которые куб должен посетить
     private int currentWaypointIndex = 0; // Индекс текущей точки
     public float moveSpeed = 5f; // Скорость движения куба
-    private ZombieSpawner Zombies;
+  
     public static CarController Instance;
     public float Healths;
+    public float rotationSpeed;
 
+    private UIManager uiManager;
+    private ZombieSpawner Zombies;
+    private UIProgressBar progressBar;
     private void Awake()
     {
         Instance = this;
@@ -21,6 +25,9 @@ public class CarController : MonoBehaviour
         // Начинаем движение к первой точке (стартовой точке)
         MoveToWaypoint(waypoints[currentWaypointIndex]);
         Zombies = ZombieSpawner.Instance;
+        uiManager = UIManager.Instance;
+        progressBar = UIProgressBar.Instance;
+        progressBar.SetMaxValue(Healths);
     }
 
 
@@ -39,7 +46,7 @@ public class CarController : MonoBehaviour
         // Проверяем, достиг ли куб текущей точки
         if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 1f)
         {
-            Zombies.SpawnRandomZombies(3);
+            Zombies.SpawnRandomZombies(currentWaypointIndex);
 
             // Если достиг, переходим к следующей точке
             currentWaypointIndex++;
@@ -47,8 +54,8 @@ public class CarController : MonoBehaviour
             // Если достигли финиша, останавливаем движение
             if (currentWaypointIndex >= waypoints.Length)
             {
-                Debug.Log("Дошли до финиша!");
-                enabled = false; // Отключаем скрипт
+                enabled = false;
+                uiManager.ChangeScreen("Win");
                 return;
             }
 
@@ -61,15 +68,21 @@ public class CarController : MonoBehaviour
     {
         // Направляем куб к следующей точке
         Vector3 direction = (waypoint.position - transform.position).normalized;
+        
+
+        Quaternion LookRot = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Lerp(transform.rotation, LookRot, Time.deltaTime * rotationSpeed);
         transform.forward = direction;
     }
 
     public void TakeDamage(float damageAmount)
     {
         Healths -= damageAmount;
+        progressBar.SetValue(Healths);
         if (Healths < 0)
         {
-            Debug.Log("Ты проиграл!");
+            enabled = false;
+            uiManager.ChangeScreen("Lose");
         }
     }
 }

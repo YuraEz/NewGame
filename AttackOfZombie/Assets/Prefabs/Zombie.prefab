@@ -111,11 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c109b482df235054faa142770d1bffcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarTransform: {fileID: 6811144203906577852, guid: 7b7ef7d9c5e569141aa2f706c0d3ddbf, type: 3}
-  moveSpeed: 2
+  moveSpeed: 5
   attackPerSecond: 1
-  attackPower: 2
-  Healths: 6
+  attackPower: 5
+  Healths: 15
 --- !u!54 &2998954165400407543
 Rigidbody:
   m_ObjectHideFlags: 0
