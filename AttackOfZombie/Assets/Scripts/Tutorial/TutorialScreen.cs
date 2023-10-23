@@ -19,7 +19,10 @@ public class TutorialScreen : MonoBehaviour
             {
                 nextTutor.gameObject.SetActive(true);
             }
-
+            else
+            {
+                TutorialManager.Instance.EndTutorial();
+            }
         });
     }
 

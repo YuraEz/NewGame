@@ -46,7 +46,7 @@ public class CarController : MonoBehaviour
         // ѕровер€ем, достиг ли куб текущей точки
         if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 1f)
         {
-            //if (currentWaypointIndex > 10) Zombies.SpawnRandomZombies(1);
+            if (currentWaypointIndex > 10) Zombies.SpawnRandomZombies(1);
 
             // ≈сли достиг, переходим к следующей точке
             currentWaypointIndex++;
@@ -56,6 +56,7 @@ public class CarController : MonoBehaviour
             {
                 enabled = false;
                 uiManager.ChangeScreen("Win");
+                //Destroy(gameObject);
                 return;
             }
 
@@ -78,11 +79,13 @@ public class CarController : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         Healths -= damageAmount;
-        progressBar.SetValue(Healths);
+        
         if (Healths < 0)
         {
             enabled = false;
             uiManager.ChangeScreen("Lose");
+            //Destroy(gameObject);
         }
+        progressBar.SetValue(Healths);
     }
 }

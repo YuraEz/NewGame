@@ -8,6 +8,13 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject[] linkeds;
     [SerializeField] private Transform MainCamera;
 
+
+    public static TutorialManager Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void OnEnable()
     {
         foreach (var screen in allScreens)
