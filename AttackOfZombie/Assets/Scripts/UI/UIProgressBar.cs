@@ -14,6 +14,7 @@ public class UIProgressBar : MonoBehaviour
     {
         Instance = this;
         slider = GetComponent<Slider>();
+        healthAmount = CarController.Instance.Healths;
     }
 
     public void SetMaxValue(float maxValue)

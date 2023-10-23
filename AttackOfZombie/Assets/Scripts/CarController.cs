@@ -27,7 +27,7 @@ public class CarController : MonoBehaviour
         Zombies = ZombieSpawner.Instance;
         uiManager = UIManager.Instance;
         progressBar = UIProgressBar.Instance;
-        progressBar.SetMaxValue(Healths);
+        //progressBar.SetMaxValue(Healths);
     }
 
 
@@ -46,7 +46,7 @@ public class CarController : MonoBehaviour
         // ѕровер€ем, достиг ли куб текущей точки
         if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 1f)
         {
-            Zombies.SpawnRandomZombies(currentWaypointIndex);
+            //if (currentWaypointIndex > 10) Zombies.SpawnRandomZombies(1);
 
             // ≈сли достиг, переходим к следующей точке
             currentWaypointIndex++;
