@@ -44,7 +44,7 @@ public class ZombieController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(attackPerSecond);
-            if (Vector3.Distance(transform.position, Car.transform.position) < 2f) 
+            if (Vector3.Distance(transform.position, Car.transform.position) < 3f) 
             {
                 print("Тебя Бьют зомби");
                 Car.TakeDamage(attackPower);

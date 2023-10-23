@@ -44,7 +44,7 @@ public class CarController : MonoBehaviour
         //transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 1.0f * Time.deltaTime);
 
         // ѕровер€ем, достиг ли куб текущей точки
-        if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 1f)
+        if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) < 3f)
         {
             if (currentWaypointIndex > 10) Zombies.SpawnRandomZombies(1);
 
@@ -61,19 +61,20 @@ public class CarController : MonoBehaviour
             }
 
             // ¬ противном случае, продолжаем двигатьс€ к следующей точке
-            MoveToWaypoint(waypoints[currentWaypointIndex]);
+   
         }
+        MoveToWaypoint(waypoints[currentWaypointIndex]);
     }
 
     private void MoveToWaypoint(Transform waypoint)
     {
         // Ќаправл€ем куб к следующей точке
-        Vector3 direction = (waypoint.position - transform.position).normalized;
+        Vector3 direction = (waypoint.position - transform.position);
         
 
         Quaternion LookRot = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Lerp(transform.rotation, LookRot, Time.deltaTime * rotationSpeed);
-        transform.forward = direction;
+        //transform.forward = direction;
     }
 
     public void TakeDamage(float damageAmount)
